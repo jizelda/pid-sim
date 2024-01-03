@@ -13,6 +13,8 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.MotorSim;
+import frc.robot.subsystems.SDBMotorSim;
+import frc.robot.subsystems.SDBMotorSim.ControlType;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -25,6 +27,9 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final MotorSim[] sims;
   private double[] graphs;
+  private SDBMotorSim _bangbang;
+  private SDBMotorSim _pid;
+  private SDBMotorSim _prof;
   
 
   // Replace with CommandPS4Controller or CommandJoystick if needed

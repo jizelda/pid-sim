@@ -5,28 +5,44 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SDBMotorSim extends SubsystemBase {
 
+public enum ControlType {
+    BANG_BANG,
+    PID,
+    PROFILE
+  }
+
+  ControlType _controlType;
+
   DCMotorSim _mechanisem; 
   PIDController _controller;
+  ProfiledPIDController _profController;
   double[] _delayArray;
-  final double delaySecs = 0.5;
+
+  final double delaySecs = 0.1;
   final int delayRoborioPeriods = (int)(delaySecs / 0.02);
   final String _name;
+  final double ks = DCMotor.getMiniCIM(1).KvRadPerSecPerVolt;
   int i = 0;
+
   /** Creates a new motorSim. */
-  public SDBMotorSim(String name) {
+  public SDBMotorSim(String name, ControlType control){
+    _controlType = control;
     _name = name;
     _mechanisem = new DCMotorSim(DCMotor.getMiniCIM(2),33,5);
     _controller = new PIDController(5, 0, 0);
+    _profController = new ProfiledPIDController(5, 0,0, new TrapezoidProfile.Constraints(50,50));
 
     SmartDashboard.putNumber("kP"+_name, 0);
-    SmartDashboard.putNumber("kI"+_name, 0);
+    // SmartDashboard.putNumber("kI"+_name, 0);
     SmartDashboard.putNumber("kD"+_name, 0);
 
     _delayArray = new double[delayRoborioPeriods];
@@ -38,16 +54,39 @@ public class SDBMotorSim extends SubsystemBase {
 
   @Override
   public void periodic() {
-    _mechanisem.setInput(_controller.calculate(_delayArray[i % _delayArray.length]));
-    _delayArray[i%_delayArray.length] = _mechanisem.getAngularPositionRotations();
+    switch(_controlType) {
+      case BANG_BANG: 
+        if(_delayArray[i % _delayArray.length] < _controller.getSetpoint()){
+          _mechanisem.setInput(clamp(_controller.getP(),-12,12));
+          break;
+        }
+          _mechanisem.setInput(clamp(-_controller.getP(),-12,12));
+        break;
+      case PID: 
+         _mechanisem.setInput(clamp(_controller.calculate(_delayArray[i % _delayArray.length]),-12,12));
+      break;
+
+      case PROFILE:
+        _mechanisem.setInput(clamp(_profController.calculate(_delayArray[i % _delayArray.length], _controller.getSetpoint())+_profController.getSetpoint().velocity/ks,-12,12));
+      break;
+    }
+    _delayArray[i%_delayArray.length] = _mechanisem.getAngularPositionRad();
     i++;
     _mechanisem.update(0.02);
-    SmartDashboard.putNumber("pos"+_name,_mechanisem.getAngularPositionRotations());
+    SmartDashboard.putNumber("pos"+_name,_mechanisem.getAngularPositionRad());
     _controller.setP(SmartDashboard.getNumber("kP"+_name, 0));
-    _controller.setI(SmartDashboard.getNumber("kI"+_name, 0));
+    // _controller.setI(SmartDashboard.getNumber("kI"+_name, 0));
     _controller.setD(SmartDashboard.getNumber("kD"+_name, 0));
+
+    _profController.setP(SmartDashboard.getNumber("kP"+_name, 0));
+    // _profController.setI(SmartDashboard.getNumber("kI"+_name, 0));
+    _profController.setD(SmartDashboard.getNumber("kD"+_name, 0));
     _controller.setSetpoint(SmartDashboard.getNumber("setpoint", 0));
     // This method will be called once per scheduler run
   }
+
+  double clamp(double value, double min, double max) {
+    return Math.max(min, Math.min(max, value));
+}   
 
 }
