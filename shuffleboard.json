@@ -11,19 +11,6 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "0,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/kP1",
-              "_title": "kP1",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
           "1,0": {
             "size": [
               1,
@@ -31,60 +18,8 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/kD1",
-              "_title": "kD1",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "4,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/setpoint",
-              "_title": "setpoint",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "2,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/kP2",
-              "_title": "kP2",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "3,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/kD2",
-              "_title": "kD2",
-              "_glyph": 148,
-              "_showGlyph": false
-            }
-          },
-          "0,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/kP3",
-              "_title": "kP3",
+              "_source0": "network_table:///SmartDashboard/kP_bang",
+              "_title": "SmartDashboard/kP_bang",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -96,8 +31,34 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/kD3",
-              "_title": "kD3",
+              "_source0": "network_table:///SmartDashboard/kPpid",
+              "_title": "SmartDashboard/kPpid",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "1,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/kPprof",
+              "_title": "SmartDashboard/kPprof",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "2,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/kDprof",
+              "_title": "SmartDashboard/kDprof",
               "_glyph": 148,
               "_showGlyph": false
             }
@@ -109,51 +70,81 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/kP4",
-              "_title": "kP4",
+              "_source0": "network_table:///SmartDashboard/kDpid",
+              "_title": "SmartDashboard/kDpid",
               "_glyph": 148,
               "_showGlyph": false
             }
           },
-          "3,1": {
+          "0,0": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/kD4",
-              "_title": "kD4",
+              "_source0": "network_table:///SmartDashboard/setpoint",
+              "_title": "SmartDashboard/setpoint",
               "_glyph": 148,
               "_showGlyph": false
             }
           },
-          "5,0": {
+          "0,1": {
             "size": [
-              3,
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/maxVel",
+              "_title": "maxVel",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "0,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/maxAcc",
+              "_title": "maxAcc",
+              "_glyph": 148,
+              "_showGlyph": false
+            }
+          },
+          "3,0": {
+            "size": [
+              5,
               3
             ],
             "content": {
               "_type": "Graph",
-              "_source0": "network_table:///SmartDashboard/pos1",
-              "_source1": "network_table:///SmartDashboard/pos2",
-              "_source2": "network_table:///SmartDashboard/pos3",
-              "_source3": "network_table:///SmartDashboard/pos4",
-              "_source4": "network_table:///SmartDashboard/setpoint",
-              "_title": "SmartDashboard/pos1",
+              "_source0": "network_table:///SmartDashboard/setpoint",
+              "_source1": "network_table:///SmartDashboard/vel_bang",
+              "_source2": "network_table:///SmartDashboard/velpid",
+              "_source3": "network_table:///SmartDashboard/velprof",
+              "_source4": "network_table:///SmartDashboard/pos_bang",
+              "_source5": "network_table:///SmartDashboard/pospid",
+              "_source6": "network_table:///SmartDashboard/posprof",
+              "_title": "SmartDashboard/setpoint",
               "_glyph": 148,
               "_showGlyph": false,
               "Graph/Visible time": 30.0,
               "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
+              "Y-axis/Automatic bounds": false,
+              "Y-axis/Upper bound": 10.0,
+              "Y-axis/Lower bound": -10.0,
               "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/pos1": true,
-              "Visible data/SmartDashboard/pos2": true,
-              "Visible data/SmartDashboard/pos3": true,
-              "Visible data/SmartDashboard/pos4": true,
-              "Visible data/SmartDashboard/setpoint": true
+              "Visible data/SmartDashboard/pos_bang": true,
+              "Visible data/SmartDashboard/pospid": true,
+              "Visible data/SmartDashboard/posprof": true,
+              "Visible data/SmartDashboard/setpoint": true,
+              "Visible data/SmartDashboard/vel_bang": false,
+              "Visible data/SmartDashboard/velpid": false,
+              "Visible data/SmartDashboard/velprof": false
             }
           }
         }

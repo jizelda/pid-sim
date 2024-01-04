@@ -43,9 +43,13 @@ public class RobotContainer {
     sims = new MotorSim[16];
     graphs = new double[sims.length];
 
-    for(int i = 0; i < sims.length; i++) {
-      sims[i] = new MotorSim((double)(i%4), (double)(i/4)/4);
-    }
+    // for(int i = 0; i < sims.length; i++) {
+    //   sims[i] = new MotorSim((double)(i%4), (double)(i/4)/4);
+    // }
+
+    _bangbang = new SDBMotorSim("_bang",ControlType.BANG_BANG);
+    _pid = new SDBMotorSim("pid", ControlType.PID);
+    _prof = new SDBMotorSim("prof", ControlType.PROFILE);
 
 
 
@@ -84,9 +88,9 @@ public class RobotContainer {
   }
 
   public void periodic() {
-    for(int i = 0; i < sims.length; i++) {
-      graphs[i] = sims[i].getPos();
-    }
-    SmartDashboard.putNumberArray("poses", graphs);
+    // for(int i = 0; i < sims.length; i++) {
+    //   graphs[i] = sims[i].getPos();
+    // }
+    // SmartDashboard.putNumberArray("poses", graphs);
   }
 }

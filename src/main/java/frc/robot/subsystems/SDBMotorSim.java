@@ -37,13 +37,16 @@ public enum ControlType {
   public SDBMotorSim(String name, ControlType control){
     _controlType = control;
     _name = name;
-    _mechanisem = new DCMotorSim(DCMotor.getMiniCIM(2),33,5);
+    _mechanisem = new DCMotorSim(DCMotor.getMiniCIM(2),50,5);
     _controller = new PIDController(5, 0, 0);
-    _profController = new ProfiledPIDController(5, 0,0, new TrapezoidProfile.Constraints(50,50));
+    _profController = new ProfiledPIDController(5, 0,0, new TrapezoidProfile.Constraints(50,20));
 
-    SmartDashboard.putNumber("kP"+_name, 0);
+    SmartDashboard.putNumber("kP"+_name, 1);
     // SmartDashboard.putNumber("kI"+_name, 0);
     SmartDashboard.putNumber("kD"+_name, 0);
+
+    SmartDashboard.putNumber("maxVel", 1);
+    SmartDashboard.putNumber("maxAcc", 1);
 
     _delayArray = new double[delayRoborioPeriods];
 
@@ -56,18 +59,20 @@ public enum ControlType {
   public void periodic() {
     switch(_controlType) {
       case BANG_BANG: 
+        if(Math.abs(_delayArray[i % _delayArray.length]-_controller.getSetpoint()) < 0.5)
+        break;
         if(_delayArray[i % _delayArray.length] < _controller.getSetpoint()){
-          _mechanisem.setInput(clamp(_controller.getP(),-12,12));
+          _mechanisem.setInputVoltage(clamp(_controller.getP(),-12,12));
           break;
         }
-          _mechanisem.setInput(clamp(-_controller.getP(),-12,12));
+          _mechanisem.setInputVoltage(clamp(-_controller.getP(),-12,12));
         break;
       case PID: 
-         _mechanisem.setInput(clamp(_controller.calculate(_delayArray[i % _delayArray.length]),-12,12));
+         _mechanisem.setInputVoltage(clamp(_controller.calculate(_delayArray[i % _delayArray.length]),-12,12));
       break;
 
       case PROFILE:
-        _mechanisem.setInput(clamp(_profController.calculate(_delayArray[i % _delayArray.length], _controller.getSetpoint())+_profController.getSetpoint().velocity/ks,-12,12));
+        _mechanisem.setInputVoltage(clamp(_profController.calculate(_delayArray[i % _delayArray.length], _controller.getSetpoint())+_profController.getSetpoint().velocity/ks,-12,12));
       break;
     }
     _delayArray[i%_delayArray.length] = _mechanisem.getAngularPositionRad();
@@ -83,6 +88,11 @@ public enum ControlType {
     _profController.setD(SmartDashboard.getNumber("kD"+_name, 0));
     _controller.setSetpoint(SmartDashboard.getNumber("setpoint", 0));
     // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("vel"+_name, _mechanisem.getAngularVelocityRadPerSec());
+
+    if(_controlType == ControlType.PROFILE)
+      _profController.setConstraints(new TrapezoidProfile.Constraints(SmartDashboard.getNumber("maxVel", 0),SmartDashboard.getNumber("maxAcc", 0)));
   }
 
   double clamp(double value, double min, double max) {
